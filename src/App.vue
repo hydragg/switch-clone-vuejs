@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <navbar></navbar>
+    <slideshow></slideshow>
+    <gameList></gameList>
     <img src="./assets/logo.png">
     <router-view></router-view>
   </div>
@@ -8,17 +10,19 @@
 
 <script>
 import axios from 'axios';
-import navbar from '@/components/navbar'
-const url = 'https://api.twitch.tv/kraken/streams?game=League%20of%20Legends&client_id=9j9fga8sofpqh8t10cig2lihlms5sh';
+import navbar from '@/components/navbar';
+import slideshow from '@/components/slideshow';
+import gameList from '@/components/gameList';
+// const url = 'https://api.twitch.tv/kraken/streams?game=League%20of%20Legends&client_id=9j9fga8sofpqh8t10cig2lihlms5sh';
 
-axios.get(url)
-.then(res => {
-  console.log(res);
-});
+// axios.get(url)
+// .then(res => {
+//   console.log(res);
+// });
 
 export default {
   name: 'app',
-  components: { navbar }
+  components: { navbar, slideshow, gameList }
 };
 </script>
 
