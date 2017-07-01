@@ -2,11 +2,17 @@
   #slideshow
     .pre.button(@click="preSlide") &#10094
     .next.button(@click="nextSlide") &#10095
-    .slides(v-for="(stream, index) in streams" :style="{ 'left': (100 * index) + '%' }" ref="slides")  
+    .slides(v-for="(stream, index) in streams" 
+    :style="{ 'left': (100 * index) + '%' }" ref="slides"
+    @mouseenter="autoSlideShow(true)"
+    @mouseleave="autoSlideShow(false)")  
       img.preview(:src="stream.preview.large" )
       .info 
-        p Hi i'm GoSu
-        p my name a
+        h5 {{ stream.channel.display_name }} - {{ stream.channel.status }}正在直播： 
+        router-link(to="/") {{ stream.game }}
+        p 觀眾: {{ stream.viewers }}
+        a(:href="stream.channel.url" target="_blank") 直播連結
+        
     .logo 
       .dot(v-for="(stream, index) in streams" :style="{ background: `url(${stream.channel.logo}) no-repeat`, 'background-size': 'cover'}" @click="showSlides(index)" ref="dots")
 </template>
@@ -22,12 +28,14 @@ export default {
     return {
       streams: [],
       slideIndex: 0,
+      interval: '',
     };
   },
   created() {
     axios.get(getStreams)
     .then(res => {
       this.streams = res.data.streams;
+      this.interval = setInterval(this.nextSlide, 4000);
     })
     .catch(err => {
       console.error(err);
@@ -35,6 +43,7 @@ export default {
   },
   methods: {
     showSlides(index) {
+      console.log(index);
       for (let i = 0; i < this.$refs.slides.length; i++) {
         this.$refs.slides[i].style.left = `${(i - index) * 100}%`;
         this.$refs.dots[i].style.boxShadow = '';
@@ -57,7 +66,13 @@ export default {
         this.slideIndex = this.slideIndex - 1;
       }
       this.showSlides(this.slideIndex);
-    }
+    },
+    autoSlideShow(bool) {
+      clearInterval(this.interval);
+      if (!bool) {
+        this.interval = setInterval(this.nextSlide, 4000);
+      }
+  },
   }
 };
 </script>
@@ -103,15 +118,31 @@ export default {
     margin: 0
     padding: 0
     @include transition(all, .6s)
+    @media screen and (max-width: 992px)
+      display: inline-flex
     .preview
       width: 540px
       margin-top: 10px
+      @media screen and (max-width: 992px)
+        flex: 1 2
       @media screen and (max-width: 768px)
         width: 100%
     .info
       display: inline-block
+      position: absolute
+      width: 300px
+      margin: 0 60px
+      top: 50px
+      right: 0%
+      text-align: left
+      p
+        margin: 10px 0
+      @media screen and (max-width: 992px)
+        position: relative
+        flex: 2 1
       @media screen and (max-width: 768px)
         display: none
+        
   .logo
     position: relative
     top: 310px
