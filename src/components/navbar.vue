@@ -6,7 +6,7 @@
       li.drowdown
         .dropbtn Games
         .dropdownContent
-          router-link(v-for="(game, index) in games" :to="game.router" :key="index") {{ game.name }} 
+          router-link(v-for="(game, index) in games" :to=" '/games/' + game.router" :key="index" :search="game.search") {{ game.name }} 
       li.search
         input.form-control(type="text" placeholder="Search...")
 </template>
@@ -15,7 +15,7 @@
 <script>
 import axios from 'axios';
 
-const getGames = 'https://api.twitch.tv/kraken/games/top?limit=8&client_id=9j9fga8sofpqh8t10cig2lihlms5sh';
+const getGames = 'https://api.twitch.tv/kraken/games/top?limit=6&client_id=9j9fga8sofpqh8t10cig2lihlms5sh';
 
 export default {
   data() {
@@ -29,9 +29,10 @@ export default {
       this.games = res.data.top.map(x => {
         return {
           name: x.game.name,
-          router: x.game.name.split(/\s/g).join('-')
+          router: x.game.name.split(/\s/g).join('-'),
+          search: x.game.name.split(/\s/g).join('%20')
         };
-      })
+      });
     })
     .catch(err => {
       console.error(err);
@@ -55,7 +56,7 @@ export default {
     &:hover
       .dropdownContent
         display: flex
-        width: 1200px
+        width: 1000px
     .dropbtn
       color: #B9D4F1
       cursor: pointer

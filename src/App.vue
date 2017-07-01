@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    <slideshow></slideshow>
+    <!--<slideshow></slideshow>
     <gameList></gameList>
-    <img src="./assets/logo.png">
+    <img src="./assets/logo.png">-->
     <router-view></router-view>
   </div>
 </template>

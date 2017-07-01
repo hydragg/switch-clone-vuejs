@@ -8,8 +8,9 @@
     @mouseleave="autoSlideShow(false)")  
       img.preview(:src="stream.preview.large" )
       .info 
-        h5 {{ stream.channel.display_name }} - {{ stream.channel.status }}正在直播： 
-        router-link(to="/") {{ stream.game }}
+        h4 {{ stream.channel.display_name }} - {{ stream.channel.status }} 
+        p 正在直播：
+          router-link(to="/") {{ stream.game }}
         p 觀眾: {{ stream.viewers }}
         a(:href="stream.channel.url" target="_blank") 直播連結
         
@@ -41,9 +42,11 @@ export default {
       console.error(err);
     });
   },
+  beforeDestroy() {
+    clearInterval(this.interval);
+  },
   methods: {
     showSlides(index) {
-      console.log(index);
       for (let i = 0; i < this.$refs.slides.length; i++) {
         this.$refs.slides[i].style.left = `${(i - index) * 100}%`;
         this.$refs.dots[i].style.boxShadow = '';
@@ -135,9 +138,11 @@ export default {
       top: 50px
       right: 0%
       text-align: left
+      h4
+        color: #B9D4F1
       p
         margin: 10px 0
-      @media screen and (max-width: 992px)
+      @media screen and (max-width: 1250px)
         position: relative
         flex: 2 1
       @media screen and (max-width: 768px)
@@ -154,14 +159,19 @@ export default {
       width: 60px
       height: 60px
       margin: 10px
+      border-radius: 50%
+      cursor: pointer
       @include transition(all, .6s)
       &:hover 
         box-shadow: 2px 2px 20px rgb(255, 255, 255)
+      @media screen and (max-width: 992px)
+        background: rgba(0, 0, 0, 0.5)
+        display: inline-block
+        width: 40px
+        height: 40px
       @media screen and (max-width: 768px)
         background: rgba(0, 0, 0, 0.5)
         display: inline-block
         width: 20px
         height: 20px
-        border-radius: 50%
-        
 </style>

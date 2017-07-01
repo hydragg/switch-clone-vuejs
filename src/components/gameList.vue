@@ -1,7 +1,7 @@
 <template lang="pug">
   #gameList
-    .preview(v-for="game in gamePreview")
-      router-link(to="/")
+    .preview(v-for="(game, index) in gamePreview")
+      router-link(:to=" '/games/' + game.router" :key="index")
         img.logo(:src="game.logo")
       h5.name {{ game.name }}
       p Viewers: {{ game.viewers }}
@@ -26,9 +26,9 @@ export default {
           name: obj.game.name,
           logo: obj.game.box.medium,
           viewers: obj.viewers,
+          router: obj.game.name.split(/\s/g).join('-'),
         };
       });
-      
     })
     .catch(err => {
       console.error(err);
