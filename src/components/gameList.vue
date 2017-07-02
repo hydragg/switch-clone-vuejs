@@ -44,7 +44,9 @@ export default {
   position: relative
   display: flex
   width: 100%
-  flex-wrap: wrap
+  flex-flow: row wrap
+  // flex-wrap: wrap
+  // flex-direction: row
   .preview
     position: relative
     margin:  30px 60px

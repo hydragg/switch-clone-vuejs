@@ -133,10 +133,9 @@ export default {
     .info
       display: inline-block
       position: absolute
-      width: 300px
-      margin: 0 60px
+      width: 25%
+      margin: 0 10px
       top: 50px
-      right: 0%
       text-align: left
       h4
         color: #B9D4F1

@@ -8,7 +8,12 @@
         .dropdownContent
           router-link(v-for="(game, index) in games" :to=" '/games/' + game.router" :key="index" :search="game.search") {{ game.name }} 
       li.search
-        input.form-control(type="text" placeholder="Search...")
+        input.form-control(type="text" v-model="text" placeholder="Search..." @keyup="userInput")
+        .result 
+          .stream(v-for="(stream, index) in filterStreams")
+            a(:href="stream.channel.url" target="_blank")  
+              img(:src="stream.channel.logo")
+              p {{ stream.channel.name }}
 </template>
 
 
@@ -16,11 +21,14 @@
 import axios from 'axios';
 
 const getGames = 'https://api.twitch.tv/kraken/games/top?limit=6&client_id=9j9fga8sofpqh8t10cig2lihlms5sh';
+const getStreams = 'https://api.twitch.tv/kraken/streams/?limit=100&client_id=9j9fga8sofpqh8t10cig2lihlms5sh';
 
 export default {
   data() {
     return {
       games: [],
+      streams: [],
+      text: '',
     }
   },
   created() {
@@ -37,7 +45,25 @@ export default {
     .catch(err => {
       console.error(err);
     });
+
+    axios.get(getStreams)
+    .then(res => {
+      this.streams = res.data.streams;
+    })
+    .catch(err => {
+      console.error(err);
+    });
   },
+  computed: {
+    filterStreams() {
+      return this.text == '' ? [] : this.streams.filter(obj => obj.channel.name.indexOf(this.text) !== -1);
+    }
+  },
+  methods: {
+    userInput() {
+      console.log(this.filterStreams);
+    }
+  }
 }
 </script>
 
@@ -80,10 +106,11 @@ export default {
     padding: 0
     .search 
       float: right
-      margin: 5px
+      margin: 5px 40px 5px 0
       padding-top: 10px
       @media screen and (max-width: 768px)
         width: 35%
+        margin: 5px
     li
       display: inline-block
       font-size: 25px
@@ -92,4 +119,27 @@ export default {
       float: left
       a
         text-decoration: none
+      &:hover
+        .result
+          display: block
+      .result
+        display: none
+        position: absolute
+        color: #F38181
+        font-size: 12px
+        height: 400px
+        overflow: scroll
+        z-index: 2 
+        .stream
+          background: #21273D
+          border: 1px solid rgba(0, 0, 0, 0.7)
+          cursor: pointer
+          &:hover
+            transform: scale(1.1, 1.1)
+          img 
+            width: 40px
+            border-radius: 50%
+          p
+            display: inline
+            margin: 10px 15px
 </style>
