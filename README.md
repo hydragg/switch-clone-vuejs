@@ -1,6 +1,6 @@
 # twitch-clone-vue
 
-> twitch clone with vue
+> [DEMO](https://hydragg.github.io/twitch-clone-vuejs/#/Twitch)
 
 ## Build Setup
 
