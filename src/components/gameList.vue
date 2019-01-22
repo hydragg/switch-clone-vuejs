@@ -7,7 +7,6 @@
       p Viewers: {{ game.viewers }}
 </template>
 
-
 <script>
 import axios from 'axios';
 
@@ -61,9 +60,9 @@ export default {
         transition: all .6s
       @media screen and (max-width: 768px)
         width: 140px
-    .name 
+    .name
       color: #F38181
       padding: 10px
-    p 
+    p
       color: #B9D4F1
 </style>
